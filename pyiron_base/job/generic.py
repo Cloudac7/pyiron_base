@@ -11,8 +11,11 @@ import os
 
 import posixpath
 import multiprocessing
+from typing import Union
+
 import h5io
 from pyiron_base.job.wrapper import JobWrapper
+from pyiron_base.job.jobtype import JobType
 from pyiron_base.state import state
 from pyiron_base.job.executable import Executable
 from pyiron_base.job.jobstatus import JobStatus
@@ -1753,6 +1756,15 @@ class GenericJob(JobCore):
             project.db.set_job_status(job_id=master_id, status="busy")
             self._logger.info("busy master: {} {}".format(master_id, self.get_job_id()))
             del self
+
+    @staticmethod
+    def _register_jobtype_name() -> Union[str, None]:
+        """Name of the JobType this class is to be registered with; None for do not register."""
+        return None
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        JobType.register_job_type(cls._register_jobtype_name(), cls)
 
 
 class GenericError(object):
