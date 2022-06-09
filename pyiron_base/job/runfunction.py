@@ -382,7 +382,8 @@ def run_job_with_runmode_queue(job):
             path=job.working_directory
         )
         command = (
-            "python -m pyiron_base.cli wrapper -p "
+            state.queue_adapter.python_path
+            + " -m pyiron_base.cli wrapper -p "
             + working_directory
             + " -f "
             + filename
@@ -394,7 +395,8 @@ def run_job_with_runmode_queue(job):
         )
     elif state.database.database_is_disabled:
         command = (
-            "python -m pyiron_base.cli wrapper -p "
+            state.queue_adapter.python_path
+            + " -m pyiron_base.cli wrapper -p "
             + job.working_directory
             + " -f "
             + job.project_hdf5.file_name
@@ -402,7 +404,8 @@ def run_job_with_runmode_queue(job):
         )
     else:
         command = (
-            "python -m pyiron_base.cli wrapper -p "
+            state.queue_adapter.python_path
+            + " -m pyiron_base.cli wrapper -p "
             + job.working_directory
             + " -j "
             + str(job.job_id)
